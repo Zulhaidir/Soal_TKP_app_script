@@ -62,40 +62,20 @@ function onFormSubmit() {
   
 }
 
-// function kunciJawaban(sheetName) {
-//   var spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1WWi3dgR2Wi9vlWYQhhsBqSqbBzVHzR8SOG2JKGgCbxA/edit?gid=0#gid=0');
-//   var sheet = spreadsheet.getSheetByName(sheetName); 
+ function kunciJawaban(sheetName) {
+   var spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1WWi3dgR2Wi9vlWYQhhsBqSqbBzVHzR8SOG2JKGgCbxA/edit?gid=0#gid=0');
+   var sheet = spreadsheet.getSheetByName(sheetName); 
 
-//   var lastRow = sheet.getLastRow();
-//   var dataRange = sheet.getRange(1, 1, lastRow, 5); // Ambil hanya hingga kolom E
-//   var dataValues = dataRange.getValues();
+   var lastRow = sheet.getLastRow();
+   var dataRange = sheet.getRange(1, 1, lastRow, 5); // Ambil hanya hingga kolom E
+   var dataValues = dataRange.getValues();
 
-//   var nilaiOpsi = dataValues.map(function(row) {
-//     return row.map(function(value) {
-//       return value;
-//     });
-//   });
-//   return nilaiOpsi;
-// }
+   var nilaiOpsi = dataValues.map(function(row) {
+     return row.map(function(value) {
+       return value;
+     });
+   });
+   return nilaiOpsi;
+ }
 
-// kunci jawaban (pake cache)
-function kunciJawaban(sheetname) {
-  var cache = CacheService.getScriptCache();
-  var cacheKey = "keyAnswers_" + sheetname; // Membuat cache key yang unik berdasarkan sheetname
 
-  var cachedData = cache.get(cacheKey);
-
-  if (cachedData) {
-    // Menggunakan data dari cache
-    return JSON.parse(cachedData);
-  } else {
-    // Ambil data dari spreadsheet
-    var spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1WWi3dgR2Wi9vlWYQhhsBqSqbBzVHzR8SOG2JKGgCbxA/edit?gid=0#gid=0');
-    var sheet = spreadsheet.getSheetByName(sheetname); // Menggunakan sheetname dari parameter
-    var dataValues = sheet.getDataRange().getValues(); // Mengambil semua data sekaligus
-
-    // Simpan data baru ke cache dengan key yang unik
-    cache.put(cacheKey, JSON.stringify(dataValues), 21600); // Simpan selama 6 jam
-    return dataValues;
-  }
-}
