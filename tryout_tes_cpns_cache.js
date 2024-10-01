@@ -1,4 +1,4 @@
-// program ini di optimasi menggunakan cache dengan maksud agar tidak perlu lagi meng-export data, tinggal disimpan di cache saja
+// program ini di optimasi menggunakan cache dengan maksud agar tidak perlu lagi meng-import data, tinggal disimpan di cache saja
 
 function onFormSubmit() {
   record_array = [];
