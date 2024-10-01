@@ -2,6 +2,8 @@
 
 function onFormSubmit() {
   record_array = [];
+  
+  // url dari sheet google form
   var sheetUrl = 'https://docs.google.com/spreadsheets/d/1_Si-MTi180PtvjjCmOXjklPT5XUv-5IoxUTd34tE3I0/edit?resourcekey=&gid=2144162136'; 
   var spreadsheet = SpreadsheetApp.openByUrl(sheetUrl); 
   var sheet = spreadsheet.getSheetByName('Form Responses 1'); 
@@ -16,7 +18,8 @@ function onFormSubmit() {
   jawaban = jawaban.map((response) => {
     return response === "" || response === null ? 0 : response;
   });
-
+  
+  // id dari google form
   var form = FormApp.openById('1rlBnH-h-q4uieItcDghjF8X6JwDcu7-0XsQQMBxtOnI');
   var jawabanTwk = jawaban.slice(0, 30); 
   var jawabanTiu = jawaban.slice(30, 65);
@@ -48,7 +51,8 @@ function onFormSubmit() {
   var sum = sumTwk + sumTiu;
   var status = (sumTwk >= 65 && sumTiu >= 80) ? "Lulus" : "Tidak Lulus";
   record_array.push(nama, sumTwk, sumTiu, sum, status);
-
+  
+  // url dari google sheet hasil nilai 
   var spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/16odfYHMrf3Rx_2dgEoSK3WGiefJZ7pXNM7Fu3EJvsEY/edit?gid=0#gid=0');
   var sheet = spreadsheet.getSheetByName('tryout1');
   var row = sheet.getLastRow() + 1;
@@ -92,7 +96,7 @@ function kunciJawaban(sheetname) {
     // Menggunakan data dari cache
     return JSON.parse(cachedData);
   } else {
-    // Ambil data dari spreadsheet
+    // Ambil data dari google sheet kunci jawaban
     var spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1WWi3dgR2Wi9vlWYQhhsBqSqbBzVHzR8SOG2JKGgCbxA/edit?gid=0#gid=0');
     var sheet = spreadsheet.getSheetByName(sheetname);
     var dataValues = sheet.getDataRange().getValues();
