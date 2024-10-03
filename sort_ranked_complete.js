@@ -1,5 +1,5 @@
-// code ini berasal dari google sheet hasil nilai
-// untuk trigger gunakan "On Open"
+// // code ini berasal dari google sheet hasil nilai
+// // untuk trigger gunakan "On Open"
 
 function myFunction() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -25,6 +25,11 @@ function myFunction() {
 
   // Menyortir baris "Lulus" berdasarkan nilai total di kolom E (indeks 4)
   lulusRows.sort(function(a, b) {
+    return b[4] - a[4]; // Sort dari tinggi ke rendah
+  });
+
+  // Menyortir baris "Tidak Lulus" berdasarkan nilai total di kolom E (indeks 4)
+  tidakLulusRows.sort(function(a, b) {
     return b[4] - a[4]; // Sort dari tinggi ke rendah
   });
 
