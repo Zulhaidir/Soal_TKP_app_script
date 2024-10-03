@@ -1,5 +1,3 @@
-// file ini berasal dari appscript google sheet hasil nilai
-
 function myFunction() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   
@@ -14,9 +12,9 @@ function myFunction() {
   var tidakLulusRows = [];
 
   for (var i = 1; i < values.length; i++) { // Mulai dari 1 untuk menghindari header
-    if (values[i][4] === "Lulus") { // Kolom E (indeks 4)
+    if (values[i][5] === "Lulus") { // Kolom E (indeks 4)
       lulusRows.push(values[i]);
-    } else if (values[i][4] === "Tidak Lulus") {
+    } else if (values[i][5] === "Tidak Lulus") {
       tidakLulusRows.push(values[i]);
     }
   }
