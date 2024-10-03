@@ -71,7 +71,7 @@ function setRanking(sheet, startRow, totalRows) {
   }
 }
 
-// cetak "-" berstatus "Tidak Lulus"
+// cetak "-" Total berstatus "Tidak Lulus"
 function markNotPassed(sheet, startRow, totalRows) {
   for (var j = startRow; j < startRow + totalRows; j++) {
     sheet.getRange(j, 7).setValue("-"); // Kolom G (indeks 6)
