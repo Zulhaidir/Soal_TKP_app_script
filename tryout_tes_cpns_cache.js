@@ -1,8 +1,10 @@
 // program ini di optimasi menggunakan cache dengan maksud agar tidak perlu lagi meng-import data, tinggal disimpan di cache saja
 
 function onFormSubmit() {
-  record_array = [];
+  // clear cache sebelum data diambil,jika ada update-an kunciJawaban dan opsiItem tinggal di clear saja dari pada tunggu 6 jam
+  // clearCache();
 
+  record_array = [];
   // url dari sheet google form
   var sheetUrl = 'https://docs.google.com/spreadsheets/d/1X-8xaJA9le6eSiEyOKISbZwsBvBSyooTUHt8perJayo/edit?resourcekey=&gid=145693396#gid=145693396'; 
   var spreadsheet = SpreadsheetApp.openByUrl(sheetUrl); 
@@ -69,6 +71,10 @@ function onFormSubmit() {
   
   var sumTkp = mapNilaiTkp.reduce((acc, cur) => acc + cur, 0);
   // --------------------------- End TKP ---------------------------------
+  Logger.log("jawaban TKP :" + jawabanTkp);
+  Logger.log("item opsi tkp: " + itemOpsiTkp);
+  Logger.log("map nilai tkp: " + mapNilaiTkp);
+  Logger.log("sum tkp: " + sumTkp);
 
   var sum = sumTwk + sumTiu + sumTkp;
   var status = (sumTwk >= 65 && sumTiu >= 80 && sumTkp >= 166) ? "Lulus" : "Tidak Lulus";
@@ -127,4 +133,14 @@ function kunciJawaban(sheetname) {
     cache.put(cacheKey, JSON.stringify(dataValues), 21600);
     return dataValues;
   }
+}
+
+function clearCache() {
+  var cache = CacheService.getScriptCache();
+  cache.remove("itemOpsi_twk");
+  cache.remove("itemOpsi_tiu");
+  cache.remove("itemOpsi_tkp");
+  cache.remove("keyAnswers_twk");
+  cache.remove("keyAnswers_tiu");
+  cache.remove("keyAnswers_tkp");
 }
