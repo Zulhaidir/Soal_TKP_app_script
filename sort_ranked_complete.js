@@ -1,3 +1,6 @@
+// code ini berasal dari google sheet hasil nilai
+// untuk trigger gunakan "On Open"
+
 function myFunction() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   
