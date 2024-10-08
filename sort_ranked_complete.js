@@ -1,6 +1,3 @@
-// // code ini berasal dari google sheet hasil nilai
-// // untuk trigger gunakan "On Open"
-
 function myFunction() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   
@@ -10,7 +7,7 @@ function myFunction() {
   var range = sheet.getDataRange(); // Mengambil semua data
   var values = range.getValues(); // Mengambil nilai dalam bentuk array 2D
 
-  // Membuat array untuk menyimpan baris dengan status "Lulus" dan "Tidak Lulus"
+  // Memisahkan data berdasarkan status
   var lulusRows = [];
   var tidakLulusRows = [];
 
@@ -23,14 +20,12 @@ function myFunction() {
     }
   }
 
-  // Menyortir baris "Lulus" berdasarkan nilai total di kolom E (indeks 4)
+  // Menyortir baris "Lulus" berdasarkan nilai total di kolom E (indeks 4), TKP di kolom D (indeks 3), TIU di kolom C (indeks 2), dan TWK di kolom B (indeks 1)
   lulusRows.sort(function(a, b) {
-    return b[4] - a[4]; // Sort dari tinggi ke rendah
-  });
-
-  // Menyortir baris "Tidak Lulus" berdasarkan nilai total di kolom E (indeks 4)
-  tidakLulusRows.sort(function(a, b) {
-    return b[4] - a[4]; // Sort dari tinggi ke rendah
+    if (b[4] !== a[4]) return b[4] - a[4]; // Sort by total
+    if (b[3] !== a[3]) return b[3] - a[3]; // Sort by TKP
+    if (b[2] !== a[2]) return b[2] - a[2]; // Sort by TIU
+    return b[1] - a[1]; // Finally, sort by TWK
   });
 
   // Menyusun kembali data di sheet
@@ -55,28 +50,36 @@ function myFunction() {
   markNotPassed(sheet, 2 + lulusRows.length, tidakLulusRows.length);
 }
 
-// sorting Total berstatus "Lulus"
+// Fungsi untuk menyusun peringkat
 function setRanking(sheet, startRow, totalRows) {
   var lastTotal = null; // Untuk menyimpan total terakhir
+  var lastTKP = null; // Untuk menyimpan TKP terakhir
+  var lastTIU = null; // Untuk menyimpan TIU terakhir
+  var lastTWK = null; // Untuk menyimpan TWK terakhir
   var rank = 1; // Peringkat awal
-  var currentRank = 1; // Peringkat saat ini yang ditampilkan
 
   for (var i = startRow; i < startRow + totalRows; i++) {
     var currentTotal = sheet.getRange(i, 5).getValue(); // Kolom E (Total, indeks 4)
+    var currentTKP = sheet.getRange(i, 4).getValue(); // Kolom D (TKP, indeks 3)
+    var currentTIU = sheet.getRange(i, 3).getValue(); // Kolom C (TIU, indeks 2)
+    var currentTWK = sheet.getRange(i, 2).getValue(); // Kolom B (TWK, indeks 1)
 
     // Jika ini adalah baris pertama atau total berbeda
-    if (lastTotal === null || currentTotal !== lastTotal) {
+    if (lastTotal === null || currentTotal !== lastTotal || currentTKP !== lastTKP || currentTIU !== lastTIU || currentTWK !== lastTWK) {
+      sheet.getRange(i, 7).setValue("#" + rank); // Kolom G (indeks 6)
       lastTotal = currentTotal; // Update total terakhir
-      sheet.getRange(i, 7).setValue("#" + currentRank); // Kolom G (indeks 6)
-      currentRank++; // Increment ranking untuk peringkat berikutnya
+      lastTKP = currentTKP; // Update TKP terakhir
+      lastTIU = currentTIU; // Update TIU terakhir
+      lastTWK = currentTWK; // Update TWK terakhir
+      rank++; // Increment ranking untuk peringkat berikutnya
     } else {
-      // Jika total sama, gunakan peringkat yang sama
-      sheet.getRange(i, 7).setValue("#" + (currentRank - 1)); // Kolom G (indeks 6)
+      // Jika semua nilai sama, gunakan peringkat yang sama
+      sheet.getRange(i, 7).setValue("#" + (rank - 1)); // Kolom G (indeks 6)
     }
   }
 }
 
-// cetak "-" Total berstatus "Tidak Lulus"
+// Cetak "-" Total berstatus "Tidak Lulus"
 function markNotPassed(sheet, startRow, totalRows) {
   for (var j = startRow; j < startRow + totalRows; j++) {
     sheet.getRange(j, 7).setValue("-"); // Kolom G (indeks 6)
