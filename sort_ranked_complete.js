@@ -11,7 +11,6 @@ function myFunction() {
   var lulusRows = [];
   var tidakLulusRows = [];
 
-  // Memisahkan data berdasarkan status
   for (var i = 1; i < values.length; i++) { // Mulai dari 1 untuk menghindari header
     if (values[i][5] === "Lulus") { // Kolom Status (indeks 5)
       lulusRows.push(values[i]);
@@ -20,12 +19,17 @@ function myFunction() {
     }
   }
 
-  // Menyortir baris "Lulus" berdasarkan nilai total di kolom E (indeks 4), TKP di kolom D (indeks 3), TIU di kolom C (indeks 2), dan TWK di kolom B (indeks 1)
+  // Menyortir baris "Lulus"
   lulusRows.sort(function(a, b) {
     if (b[4] !== a[4]) return b[4] - a[4]; // Sort by total
     if (b[3] !== a[3]) return b[3] - a[3]; // Sort by TKP
     if (b[2] !== a[2]) return b[2] - a[2]; // Sort by TIU
     return b[1] - a[1]; // Finally, sort by TWK
+  });
+
+  // Menyortir baris "Tidak Lulus" berdasarkan total
+  tidakLulusRows.sort(function(a, b) {
+    return b[4] - a[4]; // Sort by total (kolom E)
   });
 
   // Menyusun kembali data di sheet
